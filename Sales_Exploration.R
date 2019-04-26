@@ -1,4 +1,3 @@
-
 # NOTE: The dataframes that are used here, are loaded into the environment, eventually they will be uploaded to repo
 # list of loaded dataframes:
 #   - query_ile : a table with item sales
@@ -18,7 +17,7 @@ col_index <- grep("Global.Dimension.2.Code", colnames(query_ile))
 query_ile[,col_index]<-query_ile[,col_index] %>% lapply(stri_trans_general,"Latin-ASCII")
 
 # joining both tables, and filtering the result
-joined_queries <- query_ile %>% 
+joined_sales <- query_ile %>% 
   left_join(query_ssh, by= c("Document No_" = "No_"),suffix = c("_ile", "_ssh"))%>% 
   filter(Correction_ile == 0) %>%   #not interested in corrections for the moment, may affect date
   filter (Quantity <0) %>%    #not interested in positive sales entries (returns, corrections)
@@ -26,14 +25,14 @@ joined_queries <- query_ile %>%
   filter (`Customer Price Group` != 'GASTRO')   #leaving out horeca clients for the moment too
 
 #checking that we are left only with customers that interest us
-joined_queries %>% group_by(`Customer Price Group`) %>%  tally()
+joined_sales %>% group_by(`Customer Price Group`) %>%  tally()
 
 
 #-------------------------------------------------------------------------------------------------------------------
 #En principio nos vamos a quedar con el order date, mejor que shipment date
 
 #preparing a table that will have weekly sales of items as rows, and every item as a column
-sales_df_item <- joined_queries %>%
+sales_df_item <- joined_sales %>%
   filter(`Global Dimension 2 Code` != "CALVO") %>%
   mutate(init_week_day = floor_date(`Order Date`,"week")) %>% 
   group_by(init_week_day, `Item No_`) %>% 
@@ -56,12 +55,12 @@ sales_df_item <- sales_df_item%>% mutate (week_num = as.numeric(rownames(sales_d
 #--------------------------------------------------------------------------------------------------------------------
 
 #preparing a table that will have weekly sales of brands as rows, and every brand as a column
-sales_df_brand <- joined_queries %>%   
+sales_df_brand <- joined_sales %>%   
   mutate(init_week_day = floor_date(`Order Date`,"week")) %>% 
   group_by(init_week_day, `Global Dimension 2 Code`) %>% 
   summarise(Sum_Quantity = sum(Quantity)) %>% 
   ungroup()
-  
+
 
 sales_df_brand$Sum_Quantity <- sales_df_brand$Sum_Quantity*(-1)
 sales_df_brand <- sales_df_brand %>% 
@@ -72,7 +71,7 @@ sales_df_brand[is.na(sales_df_brand)] <- 0
 #-----------------------------------------------------------------------------------------------------------------
 
 #preparing a df for a stacked ts chart for brands
-sales_df_brand_2 <- joined_queries %>%   
+sales_df_brand_2 <- joined_sales %>%   
   mutate(init_week_day = floor_date(`Order Date`,"week")) %>% 
   group_by(init_week_day, `Global Dimension 2 Code`) %>% 
   summarise(Sum_Quantity = sum(Quantity)) %>% 
@@ -81,7 +80,7 @@ sales_df_brand_2 <- joined_queries %>%
 sales_df_brand_2$Sum_Quantity <- sales_df_brand_2$Sum_Quantity*(-1)
 
 #making a df for a stacked ts chart for items
-sales_df_item_2 <- joined_queries %>%   
+sales_df_item_2 <- joined_sales %>%   
   filter(`Global Dimension 2 Code` != "CALVO") %>%
   mutate(init_week_day = floor_date(`Order Date`,"week")) %>% 
   group_by(init_week_day, `Item No_`) %>% 
@@ -96,29 +95,33 @@ sales_df_item_2$Sum_Quantity <- sales_df_item_2$Sum_Quantity*(-1)
 #creating a new dataframe with our best_sellers by mean - 
 #useful to show products that at some moment have had great sales
 #top_items <- sales_df_item_2 %>% 
-  #filter (year(init_week_day) > 2017) %>% 
-  #group_by(`Item No_`) %>% 
-  #summarise(mean_sales = mean(Sum_Quantity)) %>% 
-  #arrange(desc(mean_sales)) %>% 
-  #ungroup() %>% 
-  #head(5)
+#filter (year(init_week_day) > 2017) %>% 
+#group_by(`Item No_`) %>% 
+#summarise(mean_sales = mean(Sum_Quantity)) %>% 
+#arrange(desc(mean_sales)) %>% 
+#ungroup() %>% 
+#head(5)
 
 #creating a new dataframe with our best_sellers by sum - 
 #useful to get rid of promotional products
 top_items <- sales_df_item_2 %>% 
-  filter (year(init_week_day) > 2017) %>% 
+  filter (year(init_week_day) > 2017) %>%
+  filter(`Item No_`!='R241381') %>% 
+  filter(`Item No_`!='R240681') %>% 
   group_by(`Item No_`) %>% 
   summarise(sum_sales = sum(Sum_Quantity)) %>% 
   arrange(desc(sum_sales)) %>% 
   ungroup() %>% 
-  head(5)
+  filter(sum_sales >5000)
+#%>% 
+#head(5)
 
 #innner join of our best sellers with timeseries df
 sales_df_top_items <- sales_df_item_2 %>% inner_join(top_items)
 
 
 #-----------------------------------------------------------------------------------------------------------------
-  
+
 
 
 # charts for brands
