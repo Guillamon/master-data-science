@@ -10,7 +10,12 @@ library (varhandle)
 library (data.table)
 library (ggplot2)
 
-# defining a function for extracting starting date (only available day&month) from description"
+# INITIALIZING VARIABLES, DECLARING FUNCTIONS, AND READING FILES --------------------------------------------------
+
+# Defining "Global" Variable
+period <- "month"
+
+# Defining a function for extracting starting date (only available day&month) from description"
 date_cleaner <- function(x) {
   rev_x <- reverse.string(x)
   rev_x_split <- str_split(rev_x,"")[[1]]
@@ -30,14 +35,84 @@ date_cleaner <- function(x) {
   return (substr(x,init_date_index,init_date_index + 4))
 }
 
-# defining a function for extracting substring from description.Admits vector of substrings
+# Defining a function for extracting substring from description.Admits vector of substrings
 extract_n_element <- function(string,index=1,sep=" ") {
   element <- strsplit(string,sep)[[1]] [index]
   return (element)
 }
 
+# Defining a function to expand the rows of a df by the number of periods in a time interval
+# STEPS---------------------------------------------------------------
+# 1. Get number of days: difftime(`Ending Date`,`Starting Date`)
+# 2. Get ceiling date for Starting date : ceiling_date(`Starting Date`)
+# 3.a IF ceiling date - starting date > number of days then:
+#       Fill "number of promo days" with "number of days"
+#       Break loop 
+# 3.b ELSE: 
+#       Fill "number of promo days" with (ceiling date - starting date)
+#       Set starting date as ceiling date
+#       Restart loop
+#Number of days - (ceiling date - starting date)
+expand_time_int <- function(df, start_col, end_col, line_col, n_days_col, period= "month") {
+  init_last_row <- nrow(df)
+  new_row_count <- 0
+  for (row in 1:init_last_row) {
+    
+    starting_date <- df[row,starting_date_col]
+    ending_date <- df[row,ending_date_col]
+    original_starting_date <- df[row,starting_date_col]
+    line_count <- 0
+    
+    repeat {
+      num_days <- difftime(ending_date,starting_date) +1
+      end_period <- ceiling_date(starting_date,period)
+      diff_end_period <- difftime(end_period,starting_date)
+      promo_days <- 0
+      
+      if (diff_end_period >= num_days) {
+        promo_days <- num_days
+        line_count <- line_count + 1
+        
+        if (line_count == 1) { #checking if there is only one period unit in promo
+          df[row, line_col] <- line_count
+          df[row, num_days_col] <- promo_days
+        } else {
+          new_row_count <- new_row_count + 1
+          df[init_last_row + new_row_count,] <- df[row,] #Creating new empty row
+          df[init_last_row + new_row_count, line_col] = line_count
+          df[init_last_row + new_row_count, num_days_col] = promo_days
+        }
+        break # end loop if first condition statement is true
+        
+        
+      } else {
+        promo_days <- diff_end_period
+        line_count <- line_count + 1
+        starting_date <- end_period #changing starting date for next loop
+        
+        if (line_count == 1) { #checking if it is the original row that needs including promo days
+          df[row, line_col] <- line_count
+          df[row, num_days_col] <- promo_days
+        } else {
+          new_row_count <- new_row_count + 1
+          df[init_last_row + new_row_count,] <- df[row,] #Creating new empty row
+          df[init_last_row + new_row_count, line_col] <- line_count
+          df[init_last_row + new_row_count, num_days_col] <- promo_days
+          
+        }
+      }
+    }
+  }
+  return (df)
+}      
+
+
+#reading a csv for parsing customer names
 customer_key_df <- as.data.frame(data.table::fread("Customer_Key.csv", sep=";")) %>% 
   mutate(Original_Code = as.character(Original_Code)) #changing Original_Code from numeric to character
+
+
+#CLEANING QUERY_CAMPAIGN ---------------------------------------------------------------------------------------
 
 
 # For some reason, the custom functions do not always return the same output using lapply or mutate in dplyr, or rowwise, 
@@ -100,212 +175,96 @@ campaign_df_2 <- campaign_df %>%
   filter(!is.na(Starting_Date_Promo)) #in case there is any row where Date extraction failed (i.e. some DNC promos)
 
 
-
-# CREATING A ROW PER PERIOD (MONTH INITIALLY) FOR EVERY PROMOTION PRICE, AND FINDING NUMBER OF PROMO DAYS IN EACH PERIOD
-# STEPS---------------------------------------------------------------
-# 1. Get number of days: difftime(`Ending Date`,`Starting Date`)
-# 2. Get ceiling date for Starting date : ceiling_date(`Starting Date`)
-# 3.a IF ceiling date - starting date > number of days then:
-#       Fill "number of promo days" with "number of days"
-#       Break loop 
-# 3.b ELSE: 
-#       Fill "number of promo days" with (ceiling date - starting date)
-#       Set starting date as ceiling date
-#       Restart loop
-#Number of days - (ceiling date - starting date)
-#------------------------------------------------------------
-#saving variables for loop&repeat loop
-df <- campaign_df
+#saving variables for expanding df by promotion price interval
 line_col <- "Line_Price_Promo"
 num_days_col <- "Num_Days_Price_Promo"
 starting_date_col <- "Starting_Date_Price_Promo"
 ending_date_col <- "Ending_Date_Price_Promo"
-period <- "month"
 
-init_last_row <- nrow(campaign_df)
-new_row_count <- 0
-for (row in 1:init_last_row) {
-  
-  starting_date <- campaign_df[row,starting_date_col]
-  ending_date <- campaign_df[row,ending_date_col]
-  original_starting_date <- campaign_df[row,starting_date_col]
-  line_count <- 0
-  
-  repeat {
-    num_days <- difftime(ending_date,starting_date) +1
-    end_period <- ceiling_date(starting_date,period)
-    diff_end_period <- difftime(end_period,starting_date)
-    promo_days <- 0
-    
-    if (diff_end_period >= num_days) {
-      promo_days <- num_days
-      line_count <- line_count + 1
-      
-      if (line_count == 1) { #checking if there is only one period unit in promo
-        campaign_df[row, line_col] = line_count
-        campaign_df[row, num_days_col] = promo_days
-      } else {
-        new_row_count <- new_row_count + 1
-        campaign_df[init_last_row + new_row_count,] <- campaign_df[row,] #Creating new empty row
-        campaign_df[init_last_row + new_row_count, line_col] = line_count
-        campaign_df[init_last_row + new_row_count, num_days_col] = promo_days
-      }
-      break # end loop if first condition statement is true
-      
-      
-    } else {
-      promo_days <- diff_end_period
-      line_count <- line_count + 1
-      starting_date <- end_period #changing starting date for next loop
-      
-      if (line_count == 1) { #checking if it is the original row that needs including promo days
-        campaign_df[row, line_col] = line_count
-        campaign_df[row, num_days_col] = promo_days
-      } else {
-        new_row_count <- new_row_count + 1
-        campaign_df[init_last_row + new_row_count,] <- campaign_df[row,] #Creating new empty row
-        campaign_df[init_last_row + new_row_count, line_col] = line_count
-        campaign_df[init_last_row + new_row_count, num_days_col] = promo_days
-        
-      }
-    }
-  }
-}
-
-
-
-#Changing dates of "expanded" rows
-campaign_df <- campaign_df %>% 
-  arrange(No_,desc(Starting_Date_Price_Promo)) %>%
+#expanding campaign_df (promotion price intervals)
+campaign_df <- expand_time_int(campaign_df, starting_date_col, ending_date_col, line_col, num_days_col, period) %>%
+  arrange(No_,desc(Starting_Date_Price_Promo)) %>% #arranging to make inspection easier
   mutate(Period_Price_Promo = Starting_Date_Price_Promo %m+% months(Line_Price_Promo-1)) %>% #creating column with date of the promo´s row
-  mutate(Month = month(Period_Price_Promo)) %>% 
-  mutate(Year = year(Period_Price_Promo)) %>% 
-  unite(Year_Month,Year,Month, sep="-") #uniting year and month column
-  
-  
+  mutate(Period = floor_date(Period_Price_Promo,period)) %>% #Creating a period column for later joins
+  mutate(Period = as_date(Period)) %>% 
+  select(Period, everything())
 
-#---------------------------------------------------------------------------------------------------------------  
-
-# REPEAT "EXPANDING" PROCEDURE FOR PROMOTION (NOT PROMOTION PRICES!!)---------------------------------------------
-
-df <- campaign_df_2
+#repeating previous expansion steps for campaign df (promotion intervals)
 line_col <- "Line_Promo"
 num_days_col <- "Num_Days_Promo"
 starting_date_col <- "Starting_Date_Promo"
 ending_date_col <- "Ending_Date_Price_Promo"
 
-init_last_row <- nrow(campaign_df_2)
-new_row_count <- 0
-for (row in 1:init_last_row) {
-  
-  starting_date <- campaign_df_2[row,starting_date_col]
-  ending_date <- campaign_df_2[row,ending_date_col]
-  original_starting_date <- campaign_df_2[row,starting_date_col]
-  line_count <- 0
-  
-  repeat {
-    num_days <- difftime(ending_date,starting_date) +1
-    end_period <- ceiling_date(starting_date,period)
-    diff_end_period <- difftime(end_period,starting_date)
-    promo_days <- 0
-    
-    if (diff_end_period >= num_days) {
-      promo_days <- num_days
-      line_count <- line_count + 1
-      
-      if (line_count == 1) { #checking if there is only one period unit in promo
-        campaign_df_2[row, line_col] = line_count
-        campaign_df_2[row, num_days_col] = promo_days
-      } else { #this kicks in if it is the last row of many rows
-        new_row_count <- new_row_count + 1
-        campaign_df_2[init_last_row + new_row_count,] <- campaign_df_2[row,] #Creating new empty row
-        campaign_df_2[init_last_row + new_row_count, line_col] = line_count
-        campaign_df_2[init_last_row + new_row_count, num_days_col] = promo_days
-      }
-      break # end of check if repeat condition
-      
-      
-    } else {
-      promo_days <- diff_end_period
-      line_count <- line_count + 1
-      starting_date <- end_period #changing starting date for next loop
-      
-      if (line_count == 1) { #checking if it is the original row that needs including promo days
-        campaign_df_2[row, line_col] = line_count
-        campaign_df_2[row, num_days_col] = promo_days
-      } else {
-        new_row_count <- new_row_count + 1
-        campaign_df_2[init_last_row + new_row_count,] <- campaign_df_2[row,] #Creating new empty row
-        campaign_df_2[init_last_row + new_row_count, line_col] = line_count
-        campaign_df_2[init_last_row + new_row_count, num_days_col] = promo_days
-        
-      }
-    }
-  }
-}
-
-#Changing dates of "expanded" rows
-campaign_df_2 <- campaign_df_2 %>%
+#expanding campaign_df_2 (promotion intervals)
+campaign_df_2 <- expand_time_int(campaign_df_2, starting_date_col, ending_date_col, line_col, num_days_col, period) %>% 
   arrange(No_,desc(Starting_Date_Promo)) %>%
   mutate(Period_Promo = Starting_Date_Promo %m+% months(Line_Promo-1)) %>%
-  mutate(Month = month(Period_Promo)) %>% 
-  mutate(Year = year(Period_Promo)) %>% 
-  unite(Year_Month,Year,Month, sep="-") %>% 
+  mutate(Period = floor_date(Period_Promo,period)) %>%
+  mutate(Period = as_date(Period)) %>% 
+  select(Period, everything()) %>% 
   select(-Period_Promo) #unnecessary column
 
-# JOINING EXPANDED PROMOTION PRICE AND PROMOTION DFs--------------------------
+
+
+# JOINING EXPANDED PROMOTION PRICE AND PROMOTION DFs--------------------------------------------------
+
+
 
 campaign_df <- campaign_df %>% 
-  left_join(campaign_df_2, by=c("No_", "Year_Month","Starting_Date_Promo", "Ending_Date_Price_Promo", "Customer_Code"))
+  left_join(campaign_df_2, by=c("No_", "Period","Starting_Date_Promo", "Ending_Date_Price_Promo", "Customer_Code")) 
 
-# Now preparing to join sales price table with campaign --------------------------------------------------------
+
+
+# CLEANING QUERY_SALES_PRICE AND JOINING WITH FULLY CLEANED CAMPAIGN DF----------------------------------------------------
+
+
+
+# Changing SALES TYPE variable to verbose, and filtering --------------------------------------------------------
 sales_price_df <- query_sales_price %>% 
   mutate(`Sales Type` = ifelse(`Sales Type` == 3, "Promotion", `Sales Type`)) %>% 
   mutate(`Sales Type` = ifelse(`Sales Type` == 0, "Customer", `Sales Type`)) %>%
   mutate(`Sales Type` = ifelse(`Sales Type` == 1, "Customer Group", `Sales Type`)) %>% 
-  filter(`Sales Type` == "Promotion")
+  filter(`Sales Type` == "Promotion") 
 
+#joining sales_price with campaign
 joined_sales_price <- sales_price_df %>% 
   left_join(campaign_df ,by= c("Sales Code" = "No_")) %>%
   inner_join(top_items) %>% #inner join with top item selection
   select(-sum_sales) %>% 
-  rename(Unit_Price_Set = `Unit Price`) %>%
-  filter(stri_startswith_fixed(`Item No_` ,"R24")) %>%#renaming to avoid confusion
-  filter(`Starting Date` >= '2015-01-01')# %>% 
-  #filter(stri_startswith_fixed(`Item No_`,"R240271")) %>% 
-  #filter(`Salesperson Code` == "CBA" | `Sales Code` %in% c('CBA'))
-  #filter(`Salesperson Code` == "BILLA" | `Sales Code` %in% c('7000','9000','BILLA'))
-  #filter(`Sales Type` %in% c('Customer', 'Customer Group'))
+  rename(Unit_Price_Set = `Unit Price`) %>% # renaming to avoid confusion with next df join
+  filter(`Starting Date` >= '2015-01-01')
 
-#--------------------------------------------------------------------------------------------------------------------------
-#There is a problem: the base price is sometimes not available, 
-#so it will be necessary to fill empty spaces between promotional prices using some other source
 
-#Exploring other sources to see prices
-#this source has the unit price for every single sale that was made
-#the idea is to group by period and get max price for it, thus getting the base price when there are no promotions
+#- SOLVING "STRUCTURAL" PROBLEMS IN DATA!!: 
+
+# Base price is sometimes not available, --------------------------------------------------------------------
+# so it will be necessary to fill empty spaces between promotional prices using another source:
+# sales shipment line: where we see the actual sales price of every operation 
+#the approach is to group by period and get max price for it, thus getting the base price when there are no promotions
 ssl_df <- query_ssl %>% 
-  filter(!stri_startswith_fixed(`Customer Price Group` ,"MEDIST")) %>%
-  filter(stri_startswith_fixed(`No_` ,"R24")) %>%
-  filter(!`Customer Price Group` %in% c("GASTRO")) %>%
-  filter(!`Customer Price Group` == "ZAKL") %>%
-  left_join(customer_key_df, by = c("Sell-to Customer No_" = "Original_Code")) %>% 
+  filter(!stri_startswith_fixed(`Customer Price Group` ,"MEDIST")) %>% # only interested in sales in slovakia
+  filter(stri_startswith_fixed(`No_` ,"R24")) %>% # keeping only limeñita brand
+  filter(!`Customer Price Group` %in% c("GASTRO")) %>% # only interested in retail chains, not HORECA
+  filter(!`Customer Price Group` == "ZAKL") %>% # excluding "deprecated" customers
+  left_join(customer_key_df, by = c("Sell-to Customer No_" = "Original_Code")) %>%  
   filter(!is.na(Customer_Code)) %>% #removing nas from Customer Code (Customers that are not in list, and thus, are not clients)
-  group_by(Year = year(`Shipment Date`), Month = month(`Shipment Date`), Customer_Code, No_) %>% 
+  group_by(Period = floor_date(`Shipment Date`,period), Customer_Code, No_) %>%
   summarise(Unit_Price_Sold = max(`Unit Price`)) %>% 
-  ungroup() %>%
-  unite(Year_Month,Year,Month, sep="-") 
+  ungroup() %>% 
+  mutate(Period = as_date(Period))
 
 # full join of sales line and sales price, using period as key
 full_joined_sales_price <- ssl_df %>% 
-  full_join(joined_sales_price, by = c("Year_Month" = "Year_Month", 
+  full_join(joined_sales_price, by = c("Period" = "Period",
                                        "Customer_Code" = "Customer_Code",
-                                       "No_" = "Item No_"))  #%>% 
+                                       "No_" = "Item No_"))
 
-#taking duplicated promo rows (example: cba may have promo prices for different units for the same item at the same month)
-#and keepingonly those rows that have most promo days
+# Cleaning duplicated promo rows:
+# Because some customers have multiple rows, there are campaign duplicates after join
+# (example: cba may have promo prices for different units for the same item at the same month)
+# approach is to identify duplicates, and and keep only those rows that have most promo days
 duplicated_promo <- full_joined_sales_price %>%
-  group_by(Year_Month,No_,Customer_Code) %>%
+  group_by(Period,No_,Customer_Code) %>%
   filter(n()>1) %>% #keeps duplicated rows, taking in account only groupby
   ungroup() 
 
@@ -313,8 +272,8 @@ duplicated_promo <- full_joined_sales_price %>%
 rearrange_columns <- colnames(full_joined_sales_price) 
 
 # creating a dataframe with only unique promos (taking max num of promo days)
-unique_promo <- duplicated_promo %>% 
-  group_by(Year_Month,No_,Customer_Code) %>%
+unique_promo <- duplicated_promo %>%
+  group_by(Period,No_,Customer_Code) %>%
   summarise(Num_Days_Price_Promo = max(Num_Days_Price_Promo)) %>%
   ungroup() %>% 
   inner_join(duplicated_promo) %>% 
@@ -322,18 +281,18 @@ unique_promo <- duplicated_promo %>%
 
 # taking out all duplicated promo rows, to perform full join with previously saved df
 full_joined_sales_price <- full_joined_sales_price %>% 
-  group_by(Year_Month,No_,Customer_Code) %>%
+  group_by(Period,No_,Customer_Code) %>%
   filter(!n()>1) %>% #keeps duplicated rows, taking in account only groupby
   ungroup() 
 
-# stacking full joined and unique
+# stacking full joined (without all duplicates) and unique
 full_joined_sales_price <- rbind(full_joined_sales_price,unique_promo)
   
 
-# preparing features
+
+# PREPARING FEATURES -------------------------------------------------------------------------------------
+
 full_joined_sales_price <- full_joined_sales_price %>% 
-  mutate(Period = paste(Year_Month, "1", sep="-")) %>% #changing year month to real date  
-  mutate(Period = as_date(Period)) %>%
   mutate(Unit_Price = ifelse (is.na(Unit_Price_Set),
                               Unit_Price_Sold,
                               Unit_Price_Set)) %>%
@@ -347,15 +306,14 @@ full_joined_sales_price <- full_joined_sales_price %>%
                                    0,Line_Promo)) %>% # (...) replacing NAs with 0s
   mutate(Quarter_Low_Price = grepl("DNC",Description)) %>%  # setting Quarter_Low_Price feature
   mutate(Quarter_Low_Price = ifelse(Quarter_Low_Price == "TRUE", 1, 0)) %>% 
-  #select(-Year_Month) %>% 
   select(Period, No_, Customer_Code, Unit_Price,  #just reordering columns
          Quarter_Low_Price, Num_Days_Price_Promo, Line_Price_Promo, 
-         Num_Days_Promo, Line_Promo, 
-         Starting_Date_Price_Promo, Ending_Date_Price_Promo, 
-         Starting_Date_Promo, everything()) %>% 
+         Num_Days_Promo, Line_Promo) %>% 
   arrange(No_, Customer_Code, Period) %>% 
   distinct()
 
+
+#checking if date used for observations is adequate
 query_ssh %>% 
   left_join(customer_key_df, by=c("Bill-to Customer No_" = "Original_Code")) %>%
   filter(month(`Order Date`) != month(`Shipment Date`)) %>%
@@ -363,6 +321,10 @@ query_ssh %>%
   mutate (differ = `Shipment Date` - `Order Date`) %>% 
   select (Campaign_Name, differ, everything()) %>% 
   View()
+
+
+
+
 
 #full_joined_sales_price %>% group_by(No_) %>% summarise(Init_Date = min(Period)) %>% View()
 
@@ -384,6 +346,7 @@ query_ssh %>%
 
 
 #PLOT--------------------------------------------------------------------------------------------------
+
 ggplot (data=joined_sales_price, aes(x=`Starting Date`)) +
   geom_point(aes(y=`Unit Price`, colour = "red"))
 
