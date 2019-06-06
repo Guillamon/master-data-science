@@ -12,9 +12,13 @@ library(stringi)
 library (ggplot2)
 library(reshape2)
 
+#reading a csv for parsing customer names
 customer_key_df <- as.data.frame(data.table::fread("Customer_Key.csv", sep=";")) %>% 
   mutate(Original_Code = as.character(Original_Code)) %>%  #changing Original_Code from numeric to character
   select(-Campaign_Name)
+
+#reading a csv for parsing item classes
+class_key_df <- as.data.frame(data.table::fread("Class_Key.csv", sep=";"))
 
 #setting period variable
 period <- "month"
@@ -42,37 +46,34 @@ joined_sales <- query_ile %>%
 #checking that we are left only with customers that interest us
 joined_sales %>% group_by(`Customer Price Group`) %>%  tally()
 
-
-
 #-------------------------------------------------------------------------------------------------------------------
 #En principio nos vamos a quedar con el order date, mejor que shipment date
 
 #preparing a table that will have monthly / weekly sales of items as rows, and every item as a column
 sales_df_item <- joined_sales %>%
-  mutate(init_period_date = floor_date(`Shipment Date`,period) %>% as_date()) %>% 
-  group_by(init_period_date, `Item No_`) %>% 
+  mutate(Period = floor_date(`Shipment Date`,period) %>% as_date()) %>% 
+  group_by(Period, `Item No_`) %>% 
   summarise(Sum_Quantity = sum(Quantity)) %>%
   ungroup()
-
 
 #creating a new dataframe with our best_sellers by sum - 
 #useful to get rid of promotional products
 #ALTERNATIVE: (creating a new dataframe with our best_sellers by mean -useful to show products that at some moment have had great sales)
 top_items <- sales_df_item %>% 
-  filter (year(init_period_date) > 2017) %>%
+  filter (year(Period) > 2017) %>%
   group_by(`Item No_`) %>% 
   summarise(sum_sales = sum(Sum_Quantity)) %>%
   ungroup() %>%
-  arrange(desc(sum_sales)) #%>% 
-  #filter(sum_sales > 13000)
+  arrange(desc(sum_sales)) %>% 
+  filter(sum_sales > 10000)
 
 
 #--------------------------------------------------------------------------------------------------------------------
 
 #preparing a table that will have weekly sales of brands as rows, and every brand as a column
 sales_df_brand <- joined_sales %>%   
-  mutate(init_period_date = floor_date(`Order Date`,period) %>% as_date()) %>% 
-  group_by(init_period_date, `Global Dimension 2 Code`) %>% 
+  mutate(Period = floor_date(`Order Date`,period) %>% as_date()) %>% 
+  group_by(Period, `Global Dimension 2 Code`) %>% 
   summarise(Sum_Quantity = sum(Quantity)) %>% 
   ungroup()
 
@@ -80,12 +81,12 @@ sales_df_brand <- joined_sales %>%
 #-----------------------------------------------------------------------------------------------------------------
 
 # charts for brand
-ggplot(data = sales_df_brand , aes(x=init_period_date,y=Sum_Quantity)) +
+ggplot(data = sales_df_brand , aes(x=Period,y=Sum_Quantity)) +
   geom_line(aes(color= "dark orange"))
 
 
 #stacked charts for bestseller items
-ggplot(sales_df_top_items, aes(x = init_period_date, y = Sum_Quantity)) + 
+ggplot(sales_df_top_items, aes(x = Period, y = Sum_Quantity)) + 
   geom_line(aes(color=`Item No_`)) + 
   facet_wrap(~ `Item No_`, scales = 'free_y', ncol = 1)
 
@@ -96,7 +97,7 @@ ggplot(sales_df_top_items, aes(x = init_period_date, y = Sum_Quantity)) +
 # 1. open the file
 png("limenita_month.png", width = 2700, height = 1800)
 # 2. Create the plot
-ggplot(data = sales_df_brand , aes(x=init_period_date,y=Sum_Quantity)) +
+ggplot(data = sales_df_brand , aes(x=Period,y=Sum_Quantity)) +
   geom_line(aes(color= "dark orange", size=1)) +
   theme(legend.position="none",
         axis.text=element_text(size=25),
@@ -114,7 +115,7 @@ sales_df_top_items <- sales_df_item %>%
 # 1. open the file
 png("21-30_limenita_month.png", width = 2700, height = 1800)
 # 2. Create the plot
-ggplot(sales_df_top_items, aes(x = init_period_date, y = Sum_Quantity)) + 
+ggplot(sales_df_top_items, aes(x = Period, y = Sum_Quantity)) + 
   geom_line(aes(color=`Item No_`),size=2) + 
   facet_wrap(~ `Item No_`, scales = 'free_y', ncol = 1) +
   theme(legend.position="none",

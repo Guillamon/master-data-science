@@ -58,9 +58,9 @@ expand_time_int <- function(df, start_col, end_col, line_col, n_days_col, period
   new_row_count <- 0
   for (row in 1:init_last_row) {
     
-    starting_date <- df[row,starting_date_col]
-    ending_date <- df[row,ending_date_col]
-    original_starting_date <- df[row,starting_date_col]
+    starting_date <- df[row,start_col]
+    ending_date <- df[row,end_col]
+    original_starting_date <- df[row,start_col]
     line_count <- 0
     
     repeat {
@@ -75,12 +75,12 @@ expand_time_int <- function(df, start_col, end_col, line_col, n_days_col, period
         
         if (line_count == 1) { #checking if there is only one period unit in promo
           df[row, line_col] <- line_count
-          df[row, num_days_col] <- promo_days
+          df[row, n_days_col] <- promo_days
         } else {
           new_row_count <- new_row_count + 1
           df[init_last_row + new_row_count,] <- df[row,] #Creating new empty row
           df[init_last_row + new_row_count, line_col] = line_count
-          df[init_last_row + new_row_count, num_days_col] = promo_days
+          df[init_last_row + new_row_count, n_days_col] = promo_days
         }
         break # end loop if first condition statement is true
         
@@ -92,19 +92,19 @@ expand_time_int <- function(df, start_col, end_col, line_col, n_days_col, period
         
         if (line_count == 1) { #checking if it is the original row that needs including promo days
           df[row, line_col] <- line_count
-          df[row, num_days_col] <- promo_days
+          df[row, n_days_col] <- promo_days
         } else {
           new_row_count <- new_row_count + 1
           df[init_last_row + new_row_count,] <- df[row,] #Creating new empty row
           df[init_last_row + new_row_count, line_col] <- line_count
-          df[init_last_row + new_row_count, num_days_col] <- promo_days
+          df[init_last_row + new_row_count, n_days_col] <- promo_days
           
         }
       }
     }
   }
   return (df)
-}      
+}   
 
 
 #reading a csv for parsing customer names
@@ -243,7 +243,7 @@ joined_sales_price <- sales_price_df %>%
 #the approach is to group by period and get max price for it, thus getting the base price when there are no promotions
 ssl_df <- query_ssl %>% 
   filter(!stri_startswith_fixed(`Customer Price Group` ,"MEDIST")) %>% # only interested in sales in slovakia
-  filter(stri_startswith_fixed(`No_` ,"R24")) %>% # keeping only limeñita brand
+  filter(stri_startswith_fixed(`No_` ,"R24")) %>% # keeping only the brand (it has distinct prefix)
   filter(!`Customer Price Group` %in% c("GASTRO")) %>% # only interested in retail chains, not HORECA
   filter(!`Customer Price Group` == "ZAKL") %>% # excluding "deprecated" customers
   left_join(customer_key_df, by = c("Sell-to Customer No_" = "Original_Code")) %>%  
@@ -312,15 +312,6 @@ full_joined_sales_price <- full_joined_sales_price %>%
   arrange(No_, Customer_Code, Period) %>% 
   distinct()
 
-
-#checking if date used for observations is adequate
-query_ssh %>% 
-  left_join(customer_key_df, by=c("Bill-to Customer No_" = "Original_Code")) %>%
-  filter(month(`Order Date`) != month(`Shipment Date`)) %>%
-  filter(!is.na(Campaign_Name)) %>% 
-  mutate (differ = `Shipment Date` - `Order Date`) %>% 
-  select (Campaign_Name, differ, everything()) %>% 
-  View()
 
 
 
