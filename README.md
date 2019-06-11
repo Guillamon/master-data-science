@@ -1,23 +1,23 @@
 # FORECAST OF ITEM SALES FOR ORDER PLACEMENT
 Project developed for a food and beverage distributor in Central Europe.
 The sections in this readme are:
-1. OBJECTIVES
-2. CONTEXT
-3. DATA
-4. METHODOLOGY
-5. CONCLUSIONS
-6. INSTRUCTIONS FOR RUNNING CODE
+**1. OBJECTIVES
+**2. CONTEXT
+**3. DATA
+**4. METHODOLOGY
+**5. CONCLUSIONS
+**6. INSTRUCTIONS FOR RUNNING CODE **
 
 For a more detailed story of the development of the project, read the Report in the repository
 
-## OBJECTIVES
+## 1. OBJECTIVES
 The purpose of the project is to improve the ordering system of the company, which is currently largely dependent on a single person and unstructured manual tasks.
 In this sense, this project aims to achieve:
 + Help understand what influences demand of items and how
 + Use this knowledge to produce short term forecasts that can assist the task of order placement
 + Make relevant information available and easy to understand
 
-## CONTEXT
+## 2. CONTEXT
 The company manages a stock with more than 1000 items. For practical reasons **the scope of the project is reduced to exploring and forecasting a subset of items belonging to a single brand**. The main **restrictions** that affect this brand are listed here:
 + Refrigerated products, with a **shelf life of only 60 days**
 + Orders placed on a **weekly** basis, and thus weekly incoming stock too
@@ -27,7 +27,7 @@ The company manages a stock with more than 1000 items. For practical reasons **t
 + The brand belongs to a relatively new category that is still in growth stage in the beverage market. The brand actually kick-started the category in the market in 2014
 + The brand has several classes or families: 1 litre, 750ml, Smoothies, etc.
 
-## DATA
+## 3. DATA
 The company uses and ERP sytem, that runs on a Microsoft SQL Server as a database. The core of the data is obtained from there, and is saved in the folder "Data_Files". A brief description of the files is given:
 
 + **Item_Ledger_Entry.csv**: a register of outbound items and details about them
@@ -39,7 +39,7 @@ The company uses and ERP sytem, that runs on a Microsoft SQL Server as a databas
 
 Other sources of data were used to get holiday calendars, but are not saved to the repository because they are obtained directly from their urls
 
-## METHODOLOGY
+## 4. METHODOLOGY
 A preparatory cleaning and exploration of data has been necessary, in order to get it ready for deeper exploration and modelling.
 
 **Monthly and weekly data has been used for exploration and forecasting**, which has divided the focus of the project. The reason for this has been the peculiarity of weekly data: the number of weeks in a year is variable, which affects seasonality. Also, the bulk of exploration and forecasting has been done with the data of the best-seller item, based on the hypothesis that general insights would be extendable to most items belonging to the brand.
@@ -67,8 +67,8 @@ When **weekly data** was approached, only multiple linear regression was attempt
 
 Finally, with the results of weekly foreacasts, a simple dashboard has been developed in Shiny. It allows to explore visualizations of relevant information used for forecasting.
 
-## CONCLUSIONS
-**Mean Absolute Scaled Error (MASE)** was extremely useful in the sense that it allowed to have a "universal" notion of how the models were performing across time series. It would be helpful though to **explore the possibility of adjusting it so that it penalises positive and large errors**. This is due to business logic: it is crucial that there is always enough stock for customers to be serviced, so overestimating demand (negative error) is welcome, but it is undesirable to be over-stocked and generate waste.
+## 5. CONCLUSIONS
+**Mean Absolute Scaled Error (MASE)** was very useful in the sense that it allowed to have a "universal" notion of how the models were performing across time series. It would be helpful though to **explore the possibility of adjusting it so that it penalises positive and large errors**. This is due to business logic: it is crucial that there is always enough stock for customers to be serviced, so overestimating demand (negative error) is welcome; but it is undesirable to be over-stocked and generate waste.
 
 **Multiple linear regression worked much better than expected**. The convenience of it is that it **works well with weekly data**, and models can learn surprisingly well from relatively short time series. This is very useful because new items are launched regularly, so having more than 200 observations is rarely the case. Also, the **approach used here seems extensible to other families of products**, as long as they are heavily dependant on promotions (very likely) and influenced by holidays. The **downside** to the approach is that the models produced are too complex (a range of 15 to 25 predictors per model), and would probably require re-training frequently (every 4 months would be prudent). This also results in a loss in interpretability. 
 
@@ -76,7 +76,7 @@ In the future **exploring other models would be a healthy exercise.** More advan
 
 The **dashboard can still dig deeper** showing more dimensions and visualizations such as item sales per customer, unit price per customer, or level of stock. Shiny proved to be a useful and flexible framework to continue building this.
 
-## INSTRUCTIONS FOR RUNNING CODE
+## 6. INSTRUCTIONS FOR RUNNING CODE
 The entire code has been developed with R, the advantages of it being the useof the tidyverse collection, and the forecast package.
 A Windows 10 OS was used, so make sure you run it there.
 To get the code running, **install the following**:
