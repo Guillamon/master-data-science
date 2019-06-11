@@ -1,5 +1,14 @@
 # FORECAST OF ITEM SALES FOR ORDER PLACEMENT
 Project developed for a food and beverage distributor in Central Europe.
+The sections in this readme are:
+1. OBJECTIVES
+2. CONTEXT
+3. DATA
+4. METHODOLOGY
+5. CONCLUSIONS
+6. INSTRUCTIONS FOR RUNNING CODE
+
+For a more detailed story of the development of the project, read the Report in the repository
 
 ## OBJECTIVES
 The purpose of the project is to improve the ordering system of the company, which is currently largely dependent on a single person and unstructured manual tasks.
