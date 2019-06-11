@@ -56,16 +56,20 @@ With more than 50 predictors, the **approach used for selecting them was a hybri
 
 When **weekly data** was approached, only multiple linear regression was attempted, due to issues with seasonality, and good performance with monthly data. The focus here shifted, and was to produce forecasts for more items. A total of five items were forecasted. The procedure
 
+Finally, with the results of weekly foreacasts, a simple dashboard has been developed in Shiny. It allows to explore visualizations of relevant information used for forecasting.
 
+## CONCLUSIONS
+**Mean Absolute Scaled Error (MASE)** was extremely useful in the sense that it allowed to have a "universal" notion of how the models were performing across time series. It would be helpful though to **explore the possibility of adjusting it so that it penalises positive and large errors**. This is due to business logic: it is crucial that there is always enough stock for customers to be serviced, so overestimating demand (negative error) is welcome, but it is undesirable to be over-stocked and generate waste.
 
+**Multiple linear regression worked much better than expected**. The convenience of it is that it **works well with weekly data**, and models can learn surprisingly well from relatively short time series. This is very useful because new items are launched regularly, so having more than 200 observations is rarely the case. Also, the **approach used here seems extensible to other families of products**, as long as they are heavily dependant on promotions (very likely) and influenced by holidays. The **downside** to the approach is that the models produced are too complex (a range of 15 to 25 predictors per model), and would probably require re-training frequently (every 4 months would be prudent). This also results in a loss in interpretability. 
 
+In the future **exploring other models would be a healthy exercise.** More advanced models such as Vector Autoregression, TBATS or Random Forest have proved useful in business forecasting. Using neural networks seems tempting to boost accuracy, but unpractical due to insufficient observations, and too many item forecasts to train. 
 
-
-The focus of the exploration and forecasting of the project has been divided in two parts. 
-
+The **dashboard can still dig deeper** showing more dimensions and visualizations such as item sales per customer, unit price per customer, or level of stock. Shiny proved to be a useful and flexible framework to continue building this.
 
 ## INSTRUCTIONS FOR RUNNING CODE
-The code has been developed and tested on a Windows 10 OS, so make sure you run it there
+The entire code has been developed with R, the advantages of it being the useof the tidyverse collection, and the forecast package.
+A Windows 10 OS was used, so make sure you run it there.
 To get the code running, **install the following**:
 1. **Anaconda**. You can download it [here](https://www.anaconda.com/distribution/)
 2. **R**
@@ -84,7 +88,6 @@ When running the code **remember this**:
 + Make sure that *Data*, *Values*, and *Functions* that result from running each script are saved to the environment to move on to the next one
 + The scripts with suffix "week" overwrite saved *Data*, *Values* and *Functions* from the scripts with suffix "month"
 
-
-
-
-
+Final remarks regarding the **Dashboard**:
++ To access it, execute the script Shiny App. It has not been hosted on a server online, so this is the only way to access it
++ It has only one page, where all toggling options appear on the sidebar
