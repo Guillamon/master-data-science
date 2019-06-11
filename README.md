@@ -1,4 +1,4 @@
-# FORECAST OF ITEM SALES FOR ORDER PLACEMENT
+# FORECASTS OF ITEM SALES FOR ORDER PLACEMENT
 Project developed for a food and beverage distributor in Central Europe.
 The sections in this readme are:
 1. OBJECTIVES
