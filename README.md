@@ -1,5 +1,5 @@
 # FORECAST OF ITEM SALES FOR ORDER PLACEMENT
-Project developed for a food and beverage distributor in Central Europe
+Project developed for a food and beverage distributor in Central Europe.
 
 ## OBJECTIVES
 The purpose of the project is to improve the ordering system of the company, which is currently largely dependent on a single person and unstructured manual tasks.
@@ -7,6 +7,62 @@ In this sense, this project aims to achieve:
 + Help understand what influences demand of items and how
 + Use this knowledge to produce short term forecasts that can assist the task of order placement
 + Make relevant information available and easy to understand
+
+## CONTEXT
+The company manages a stock with more than 1000 items. For practical reasons **the scope of the project is reduced to exploring and forecasting a subset of items belonging to a single brand**. The main **restrictions** that affect this brand are listed here:
++ Refrigerated products, with a **shelf life of only 60 days**
++ Orders placed on a **weekly** basis, and thus weekly incoming stock too
++ Lead time from placed order to delivery to customer of 3 to 4 weeks
++ Only a handful of customers: retail chains
++ New items launched every year
++ The brand belongs to a relatively new category that is still in growth stage in the beverage market. The brand actually kick-started the category in the market in 2014
++ The brand has several classes or families: 1 litre, 750ml, Smoothies, etc.
+
+## DATA
+The company uses and ERP sytem, that runs on a Microsoft SQL Server as a database. The core of the data is obtained from there, and is saved in the folder "Data_Files". A brief description of the files is given:
+
++ **Item_Ledger_Entry.csv**: a register of outbound items and details about them
++ **Sales_Header.csv**: a register of sales with details about customers to whom items were sold
++ **Sales_Line.csv**: a register of sales with details about each operation
++ **Sales_Price.csv**: a register of prices set for each item and customer
++ **Promo_Campaigns.csv**: a register of each promotional campaign
++ **Customer_Key.csv** and **Class_Key.csv**: key tables used to input additional information to previous tables
+
+Other sources of data were used to get holiday calendars, but are not saved to the repository because they are obtained directly from their urls
+
+## METHODOLOGY
+A preparatory cleaning and exploration of data has been necessary, in order to get it ready for deeper exploration and modelling.
+
+**Monthly and weekly data has been used for exploration and forecasting**, which has divided the focus of the project. The reason for this has been the peculiarity of weekly data: the number of weeks in a year is variable, which affects seasonality. Also, the bulk of exploration and forecasting has been done with the data of the best-seller item, based on the hypothesis that general insights would be extendable to most items belonging to the brand.
+
+When exploring, the main focus has been understanding how demand behaves and what could cause it. Once insights were obtained, modelling was attempted.
+
+For the **training of models, time-series cross validation** (or forecasting on a rolling window) has been used, which favours more robust models than using a simple hold-out test. The metric that has been chosen to measure accuracy is **Mean Absolute Scaled Errors (MASE)**. This metric scales errors by using a benchmark model, in this case a naive forecast.
+
+With **monthly data**, forecasts were of one month, and they were produced by:
++ Multiple Linear Regression
++ Exponential methods (Loess, Holt, Holt-Winters, ETS)
++ Arima models (both seasonal and non-seasonal)
+
+It is worth mentioning that with multiple linear regression, the **predictors used can be grouped as**:
++ Number of holidays and business days in a month
++ Dummy variables of the four seasons
++ Unit Price of the Item for each customer
++ Number of days with promotions and promotion prices, both aggregated and for each customer
++ Lagged values of item sales, and of other predictors such as number of promotion days or sales of the class the item belongs to (excluding itself)
++ Lead values of holidays
+
+With more than 50 predictors, the **approach used for selecting them was a hybrid stepwise regression**. That is, in an iterative process, adding predictors that increase accuracy the most. Then the process is inverted, by removing predictors and finding subsets that maximise accuracy. Finally, residuals of the remaining model are checked, and if they are not satisfying, predictors can be added or removed manually, and stepwise regression is reiterated.
+
+When **weekly data** was approached, only multiple linear regression was attempted, due to issues with seasonality, and good performance with monthly data. The focus here shifted, and was to produce forecasts for more items. A total of five items were forecasted. The procedure
+
+
+
+
+
+
+The focus of the exploration and forecasting of the project has been divided in two parts. 
+
 
 ## INSTRUCTIONS FOR RUNNING CODE
 The code has been developed and tested on a Windows 10 OS, so make sure you run it there
@@ -22,7 +78,8 @@ Now download or clone this repository on your local disk.
 From RStudio, open the RPROJ file master-data-science.proj. Always run the code from there to make sure paths to directories are correct.
 
 When running the code **remember this**:
-+ Pay special attention to running the script Install_Packages.R correctly.
++ Pay special attention to running the script Install_Packages.R correctly
++ Have an internet connection when running Holidays.csv, since it imports data directly from urls
 + Once you have opened the project, run the scripts in the order that is assigned to their file names
 + Make sure that *Data*, *Values*, and *Functions* that result from running each script are saved to the environment to move on to the next one
 + The scripts with suffix "week" overwrite saved *Data*, *Values* and *Functions* from the scripts with suffix "month"
