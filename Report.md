@@ -55,7 +55,7 @@ Here is the weekly sales of the chosen brand.
 
 And This is what sales of the top 5 items looked liked:
 
-<h5 align="center">ITEM SALES DON´T SEEM TOO HOMOGENEOUS</h5> 
+<h5 align="center">ITEM SALES DON´T SEEM TOO HOMOGENEOUS, SCARY? </h5> 
 
 <p align = "center" >
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Top_Items_Weekly.png width=700 height = 500>
@@ -110,10 +110,13 @@ This is what the monthly sales of the top-seller item looked like:
 
 Trend was crystal clear, and cycles were not an issue. My main concern was to find patterns of seasonality (beyond weekly of course), but it didn´t look good at first sight. There appeared to be slightly regular peaks and troughs
 
+<h5 align="center">ANY SEASON IN THESE SEASONAL PLOTS? </h5> 
 
-
+<p float = "left" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Polar_Season_Plot.png height="300">
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Season_Plot.png height="300" >
 [SEASONAL LINE CHART, POLAR CHART, BOXPLOT, SUBSERIES PLOT]
-
+&nbsp;
 
 It wasn´t orthodox, but I decided to see if a moving average could show me something that I was missing. And four windows told me it was possible that there was quarterly seasonality. Although it didn´t look to clear a pattern seemed to be picking up
 
