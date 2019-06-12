@@ -115,17 +115,24 @@ Trend was crystal clear, and cycles were not an issue. My main concern was to fi
 <p float = "left" >
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Polar_Season_Plot.png height="300">
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Season_Plot.png height="300" >
-[SEASONAL LINE CHART, POLAR CHART, BOXPLOT, SUBSERIES PLOT]
 &nbsp;
 
-It wasn´t orthodox, but I decided to see if a moving average could show me something that I was missing. And four windows told me it was possible that there was quarterly seasonality. Although it didn´t look to clear a pattern seemed to be picking up
+It wasn´t orthodox, but I decided to see if a moving average could show me something that I was missing. And four windows told me it was possible that there was quarterly seasonality. Although it wasn´t too clear that a pattern was picking up.
 
-[MONTHLY VS MONTHLY SMOOTHED WITH MA, SEASONAL LINE CHART AND POLAR CHART]
-[MONTHLY VS QUARTERLY DATA]
+<h5 align="center">AN UNORTHODOX USE OF MOVING AVERAGE </h5>
+<p align = "center" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Target_Item_Monthly.png width=500 height = 300>
+</p>
+&nbsp;
 
 This same pattern showed up when looking at the sales of the item´s class (750 ml), and the brand too.
 
-[FACETED SMOOTHED SALES FOR BRAND, CLASS AND ITEM]
+<h5 align="center">LIKE FATHER, LIKE SON </h5>
+<p align = "center" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Smoothed_Comparison.png width=700 height = 500>
+</p>
+&nbsp;
+
 
 And finally, using more advanced methods, X11 and Loess decomposing showed the expected seasonality. Seats however was unable to do so, and to me this just could mean that quarter seasonality did not look rock solid. What could be causing this? 
 
