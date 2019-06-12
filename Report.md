@@ -110,7 +110,7 @@ This is what the monthly sales of the top-seller item looked like:
 
 Trend was crystal clear, and cycles were not an issue. My main concern was to find patterns of seasonality (beyond weekly of course), but it didn´t look good at first sight. There appeared to be slightly regular peaks and troughs
 
-<h5 align="center">ANY SEASON IN THESE SEASONAL PLOTS? </h5> 
+<h5 align="center">ANY SEASONALITY IN THESE SEASONAL PLOTS? </h5> 
 
 <p float = "left" >
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Polar_Season_Plot.png height="300">
@@ -127,24 +127,49 @@ It wasn´t orthodox, but I decided to see if a moving average could show me some
 
 This same pattern showed up when looking at the sales of the item´s class (750 ml), and the brand too.
 
-<h5 align="center">LIKE FATHER, LIKE SON </h5>
+<h5 align="center">LIKE FATHER, LIKE SON</h5>
 <p align = "center" >
-<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Smoothed_Comparison.png width=700 height = 500>
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Smoothed_Comparison.png width=500 height = 300>
 </p>
 &nbsp;
 
 
 And finally, using more advanced methods, X11 and Loess decomposing showed the expected seasonality. Seats however was unable to do so, and to me this just could mean that quarter seasonality did not look rock solid. What could be causing this? 
 
-[X11, LOESS AND SEATS DECOMPOSITION]
+
+<h5 align="center"> ADVANCED DECOMPOSITION OF THE CORPSE</h5>
+<p align = "center" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/X11.png width=500 height = 300>
+</p>
+&nbsp;
+
+<p align = "center" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/LOESS.png width=500 height = 300>
+</p>
+&nbsp;
+
+<p align = "center" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/SEATS.png width=500 height = 300>
+</p>
+&nbsp;
 
 The main suspect behind the irregular behaviour of the time series was of course, **promotions**. I had to drill a hole here. **How active was customers´promotional activity?** This timeline said "enough":
 
-[GANTT CHART] Note: Customers have to buy stock before promotions, so that is why promotion Prices have a longer duration
+<h5 align="center"> PROMOTIONS: REGULARLY IRREGULAR</h5>
+<p align = "center" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Promo_Timeline.png width=600 height = 400>
+</p>
+
+*Note: Customers have to buy stock before promotions, so that is why promotion Prices have a longer duration*
+
+&nbsp;
 
 The sum of the number of promotional days in each month also revealed something interesting: patterns were shifting, in a way that reminded a lot of the shifting of peaks and troughs in our time series
 
-[EVOLUTION OF NUMBER OF PROMOTION DAYS PER MONTH AND PER QUARTER]
+<h5 align="center"> SHIFTY PROMOTIONS </h5>
+<p align = "center" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Promo_Evolution_Monthly.png width=600>
+</p>
 
 I had enough information to attempt my first approach to forecasting: a **Multiple Linear Regression**.
 This had the advantage of being simple, interpretable, and fast to compute. Also I had **information of promotions** with one month in advance, which would also make it feasible.
