@@ -216,6 +216,7 @@ Regression had worked pretty well, what could **Exponential Methods and Arima** 
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Auto_Sarima_Month.png height=120>
 </p>
 
+&nbsp;
 [...]
 
 It was now time to approach weekly data. I was only going to try a multiple linear regression, it had performed pretty well with weekly data, time was pressing, Arima had not been much better, and I was not convinced by workarounds I had read about to handle variable number of weeks in a year.
@@ -232,16 +233,20 @@ Before going straight to it, I dug a little deeper, and explored how retail chai
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/School_Holiday_Plot.gif width=700>
 </p>
 
+&nbsp;
+
 It looked like I could expect peaks before and after bank holidays, and troughs during them; and a similar pattern for school holidays, only that, because their duration is longer, buyer activity would simply moderate. Further from that, there didn´t seem to be weekly seasonality, only certain weeks at which activity tended to lower or intensify in most cases due to holidays.
 
 Back to the multiple linear regression, I recycled the good old same predictors I had used for monthly data, but added weeks after and before holidays, and was **careful not to use lagged sales values inferior to four weeks** (my forecast window).
 
 Although the my time series was really messy, the forecast did an unexpectedly decent job.
 
-<h5 align="center"> TESTS OF THE WINNER MODEL, PRETTY SATISFYING </h5>
+<h5 align="center"> WEEKLY DATA FORECAST TESTS, NOT THAT SCARY ANYMORE </h5>
 <p align = "center" >
-<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Month_Item1.gif width=600>
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Week_Item1.gif width=600>
 </p>
+
+&nbsp;
 
 I had to take a deep breath, it was now time for the ultimate test: I had to try forecasting sales of other items of the same brand. 
 
