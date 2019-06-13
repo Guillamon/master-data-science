@@ -268,7 +268,7 @@ I did this with five items... and although some time series only had observation
 
 <h5 align="center"> ITEM 4 TESTS </h5>
 <p align = "center" >
-<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Week_Item5.gif width=600>
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Week_Item4.gif width=600>
 </p>
 
 &nbsp;
@@ -282,7 +282,10 @@ I did this with five items... and although some time series only had observation
 
 I had now something solid enough to go a step further, I had not forgotten my other dark purpose. The case was calling for a Dashboard. I rolled my sleeves up and built an **interactive Shiny app**, where the end user could basically explore the time series, check the forecast of an item, and see at the same time when promotions and holidays had happened or would happen. Was that not making relevant information available?
 
-[GIF with dashboard interaction]
+<h5 align="center"> ITEM 5 TESTS </h5>
+<p align = "center" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Shiny_Demo.gif width=600>
+</p>
 
 
 ### THE SILK LESSONS OF THE TIGER
