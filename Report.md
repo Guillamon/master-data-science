@@ -121,7 +121,7 @@ It wasn´t orthodox, but I decided to see if a moving average could show me some
 
 <h5 align="center">AN UNORTHODOX USE OF MOVING AVERAGE </h5>
 <p align = "center" >
-<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Target_Item_Monthly.png width=500 height = 300>
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Monthly_Smoothed.png width=500 height = 300>
 </p>
 &nbsp;
 
