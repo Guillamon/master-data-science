@@ -171,6 +171,8 @@ The sum of the number of promotional days in each month also revealed something 
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Promo_Evolution_Monthly.png width=600>
 </p>
 
+&nbsp;
+
 I had enough information to attempt my first approach to forecasting: a **Multiple Linear Regression**.
 This had the advantage of being simple, interpretable, and fast to compute. Also I had **information of promotions** with one month in advance, which would also make it feasible.
 
@@ -201,10 +203,12 @@ As a final step, I wanted to know when should I cut my data, since I didn´t wan
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Month.gif width=600>
 </p>
 
+&nbsp;
+
 Regression had worked pretty well, what could **Exponential Methods and Arima** do for me?
 
 
-<h5 align="center"> DON´T LOOK BAD HERE, BUT TSCV DOESN´T THINK SO </h5>
+<h5 align="center">THESE DON´T LOOK TOO BAD HERE, BUT TSCV DOESN´T THINK SO </h5>
 <p float = "left" align = "center" >
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_ETS_Month.png height=120>
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_HW_Month.png height=120>
@@ -269,15 +273,4 @@ All this came to me sitting at my favourite spot in my old dirty couch. I was ex
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-Chapter titles are courtesy of Mystery Title Generator: http://www.starmanseries.com/toolkit/titles_mystery.html
+*Chapter titles are courtesy of Mystery Title Generator: http://www.starmanseries.com/toolkit/titles_mystery.html*
