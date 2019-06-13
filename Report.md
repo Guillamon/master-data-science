@@ -196,9 +196,9 @@ This method was **Stepwise Regression**. I defined a function that added one pre
 
 As a final step, I wanted to know when should I cut my data, since I didn´t want to train with too long or too short time series. With the model I found, I performed multiple forecasts, each beginning at a different month. The month that returned best accuracy would be when my time series should start.
 
-<h5 align="center"> NOT MUCH BETTER THAN A NAIVE FORECAST, BUT ACCURATE! </h5>
+<h5 align="center"> TESTS OF THE WINNER MODEL, PRETTY SATISFYING </h5>
 <p align = "center" >
-<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Month.png width=600>
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Month.gif width=600>
 </p>
 
 Regression had worked pretty well, what could **Exponential Methods and Arima** do for me?
@@ -229,8 +229,6 @@ Before going straight to it, I dug a little deeper, and explored how retail chai
 </p>
 
 It looked like I could expect peaks before and after bank holidays, and troughs during them; and a similar pattern for school holidays, only that, because their duration is longer, buyer activity would simply moderate. Further from that, there didn´t seem to be weekly seasonality, only certain weeks at which activity tended to lower or intensify in most cases due to holidays.
-
-[BOXPLOT OF WEEKS / SEASONAL LINE CHART]
 
 Back to the multiple linear regression, I recycled the good old same predictors I had used for monthly data, but added weeks after and before holidays, and was **careful not to use lagged sales values inferior to four weeks** (my forecast window).
 
