@@ -243,7 +243,7 @@ Although the my time series was really messy, the forecast did an unexpectedly d
 
 <h5 align="center"> WEEKLY DATA FORECAST TESTS, NOT THAT SCARY ANYMORE </h5>
 <p align = "center" >
-<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Week_Item1.gif width=600>
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Month_Item1.gif width=600>
 </p>
 
 &nbsp;
