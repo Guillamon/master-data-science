@@ -243,7 +243,7 @@ Although the my time series was really messy, the forecast did an unexpectedly d
 
 <h5 align="center"> WEEKLY DATA FORECAST TESTS, NOT THAT SCARY ANYMORE </h5>
 <p align = "center" >
-<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Month_Item1.gif width=600>
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Week_Item1.gif width=600>
 </p>
 
 &nbsp;
@@ -252,7 +252,33 @@ I had to take a deep breath, it was now time for the ultimate test: I had to try
 
 I did this with five items... and although some time series only had observations from 2018, they still performed surprisingly well
 
-[GIFS FOR FIVE ITEMS]
+<h5 align="center"> ITEM 2 TESTS </h5>
+<p align = "center" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Week_Item2.gif width=600>
+</p>
+
+&nbsp;
+
+<h5 align="center"> ITEM 3 TESTS </h5>
+<p align = "center" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Week_Item3.gif width=600>
+</p>
+
+&nbsp;
+
+<h5 align="center"> ITEM 4 TESTS </h5>
+<p align = "center" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Week_Item5.gif width=600>
+</p>
+
+&nbsp;
+
+<h5 align="center"> ITEM 5 TESTS </h5>
+<p align = "center" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Week_Item5.gif width=600>
+</p>
+
+&nbsp;
 
 I had now something solid enough to go a step further, I had not forgotten my other dark purpose. The case was calling for a Dashboard. I rolled my sleeves up and built an **interactive Shiny app**, where the end user could basically explore the time series, check the forecast of an item, and see at the same time when promotions and holidays had happened or would happen. Was that not making relevant information available?
 
