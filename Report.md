@@ -204,12 +204,12 @@ As a final step, I wanted to know when should I cut my data, since I didn´t wan
 Regression had worked pretty well, what could **Exponential Methods and Arima** do for me?
 
 
-<h5 align="center"> NOT TOO RELIABLE </h5>
+<h5 align="center"> DON´T LOOK BAD HERE, BUT TSCV DOESN´T THINK SO </h5>
 <p float = "left" align = "center" >
-<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_ETS_Month.png width=200>
-<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_HW_Month.png width=200>
-<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Manual_Sarima_Month.png width=200>
-<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Auto_Sarima_Month.png width=200>
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_ETS_Month.png height=120>
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_HW_Month.png height=120>
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Manual_Sarima_Month.png height=120>
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Auto_Sarima_Month.png height=120>
 </p>
 
 [...]
@@ -218,7 +218,15 @@ It was now time to approach weekly data. I was only going to try a multiple line
 
 Before going straight to it, I dug a little deeper, and explored how retail chain purchasers behaved related both to bank holidays and school holidays.
 
-[GIFS with behaviour of holidays and school holidays]
+<h5 align="center"> BANK HOLIDAYS </h5>
+<p align = "center" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Bank_Holiday_Plot.gif width=700>
+</p>
+
+<h5 align="center"> SCHOOL HOLIDAYS </h5>
+<p align = "center" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/School_Holiday_Plot.gif width=700>
+</p>
 
 It looked like I could expect peaks before and after bank holidays, and troughs during them; and a similar pattern for school holidays, only that, because their duration is longer, buyer activity would simply moderate. Further from that, there didn´t seem to be weekly seasonality, only certain weeks at which activity tended to lower or intensify in most cases due to holidays.
 
