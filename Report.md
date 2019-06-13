@@ -238,7 +238,10 @@ Back to the multiple linear regression, I recycled the good old same predictors 
 
 Although the my time series was really messy, the forecast did an unexpectedly decent job.
 
-[GIF WITH FORECASTS AND RESIDUALS]
+<h5 align="center"> TESTS OF THE WINNER MODEL, PRETTY SATISFYING </h5>
+<p align = "center" >
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Month_Item1.gif width=600>
+</p>
 
 I had to take a deep breath, it was now time for the ultimate test: I had to try forecasting sales of other items of the same brand. 
 
