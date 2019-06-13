@@ -284,7 +284,7 @@ I had now something solid enough to go a step further, I had not forgotten my ot
 
 <h5 align="center"> ITEM 5 TESTS </h5>
 <p align = "center" >
-<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Shiny_Demo.gif width=600>
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Shiny_Demo.gif width=900>
 </p>
 
 
