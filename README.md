@@ -40,7 +40,7 @@ The company uses and ERP sytem, that runs on a Microsoft SQL Server as a databas
 + **Purchase_Line.csv**: a register of purchases of items
 + **Sales_Brands.csv**: a sum of revenues produced by each brand since 2018
 
-Other sources of data were used to get holiday calendars, but are not saved to the repository because they are obtained directly from their urls
+Other sources of data were used to get holiday calendars, but are not saved to the repository because they are obtained directly from their urls. They are downloaded in to the empty directory "Holidays"
 
 ## 4. METHODOLOGY
 A preparatory cleaning and exploration of data has been necessary, in order to get it ready for deeper exploration and modelling.
@@ -93,7 +93,7 @@ To get the code running, **install the following**:
 For a detailed step by step of installation go [here](https://www.guru99.com/download-install-r-rstudio.html#8)
 
 Now download or clone this repository on your local disk. 
-From RStudio, open the RPROJ file master-data-science.proj. Always run the code from there to make sure paths to directories are correct.
+From RStudio, open the RPROJ file Master_Project.Rproj. Always run the code taking this step first to make sure paths to directories are correct.
 
 When running the code **remember this**:
 + Pay special attention to running the script Install_Packages.R correctly
