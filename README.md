@@ -18,7 +18,7 @@ In this sense, this project aims to achieve:
 + Make relevant information available and easy to understand
 
 ## 2. CONTEXT
-The company manages a stock with more than 1000 items. For practical reasons **the scope of the project is reduced to exploring and forecasting a subset of items belonging to a single brand**. The main **restrictions** that affect this brand are listed here:
+The company manages a stock of hundreds of items. For practical reasons **the scope of the project is reduced to exploring and forecasting a subset of items belonging to a single brand**. The main **restrictions** that affect this brand are listed here:
 + Refrigerated products, with a **shelf life of only 60 days**
 + Orders placed on a **weekly** basis, and thus weekly incoming stock too
 + Lead time from placed order to delivery to customer of 3 to 4 weeks
