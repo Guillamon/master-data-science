@@ -65,7 +65,7 @@ And This is what sales of the top 5 items looked liked:
 At that moment I was new to Time Series, but this **kind of resembled white noise.**
 It had been a brave move, but could it have been foolish too? 
 
-### Chapter 3: The  Dismal Data Of Dolphin
+### Chapter 3: The  Misty Data Of Jericho
 
 Luckily, my company used an ERP sytem, that ran on a **Microsoft SQL Server** as a database. The core of the data I would use came from here. I **connected the database to RStudio** and queried from there, loading the data to the environment. However, if any poor soul ever needs to run my code, the data is uploaded in my **Git repo as CSVs**.
 Incidentally, other sources of data were used to get holiday calendars, for which ics files were parsed and pdfs scraped.
@@ -284,7 +284,7 @@ So I tried the **same approach for multiple linear regression with four more ite
 
 I had now something solid enough to go a step further, I had not forgotten my other dark purpose. The case was calling for a Dashboard. I rolled my sleeves up and quickly built an **interactive Shiny app**, where the end user could basically explore the time series, check the forecast of an item, and see at the same time when promotions and holidays had happened or would happen. Was that not making relevant information available? Of course I was still leaving important data out, but this was more than enough to start testing it at my company... 
 
-<h5 align="center"> A SHORT DEMO FOR A SIMPLE APP </h5>
+<h5 align="center"> A SHORT DEMO FOR A SIMPLE APP <br/> (mouse on the sidebar!) </h5>
 <p align = "center" >
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Shiny_Demo.gif width=900>
 </p>
