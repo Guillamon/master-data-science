@@ -4,7 +4,7 @@
 
 ### Chapter I: A  Case For The Flawless Monocle
 
-The idea for this project first came to me when I was fresh newcomer at my current company not many months ago. Despite being a humble **food & beverage distributor** in Central Europe, the first thing that called my attention was the suspiciously **broad range of products, brands -and therefore suppliers** a small company like mine could handle.
+The sniff of this case first came to me when I was fresh newcomer at my current company not many months ago. Despite being a humble **food & beverage distributor** in Central Europe, the first thing that called my attention was the suspiciously **broad range of products, brands -and therefore suppliers** a small company like mine could handle.
 
 I knew I was on track when I found that many **operations were still heavily dependent on physical paperwork, and what is worse: Excel!**.
 
