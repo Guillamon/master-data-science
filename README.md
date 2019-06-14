@@ -8,7 +8,7 @@ The sections in this readme are:
 5. CONCLUSIONS
 6. INSTRUCTIONS FOR RUNNING CODE
 
-For a more detailed story of the development of the project, read the Report in the repository
+For a more detailed story of the development of the project, read the Report in the repository [here](https://github.com/Guillamon/master-data-science/blob/master/Report.md)
 
 ## 1. OBJECTIVES
 The purpose of the project is to improve the ordering system of the company, which is currently largely dependent on a single person and unstructured manual tasks.
@@ -36,6 +36,9 @@ The company uses and ERP sytem, that runs on a Microsoft SQL Server as a databas
 + **Sales_Price.csv**: a register of prices set for each item and customer
 + **Promo_Campaigns.csv**: a register of each promotional campaign
 + **Customer_Key.csv** and **Class_Key.csv**: key tables used to input additional information to previous tables
++ **Item_Weights.csv**: a list of weights (or volume rather) of each item
++ **Purchase_Line.csv**: a register of purchases of items
++ **Sales_Brands.csv**: a sum of revenues produced by each brand since 2018
 
 Other sources of data were used to get holiday calendars, but are not saved to the repository because they are obtained directly from their urls
 
