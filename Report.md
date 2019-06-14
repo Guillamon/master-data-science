@@ -1,4 +1,4 @@
-# FORECAST OF ITEM SALES FOR ORDER PLACEMENT
+# FORECASTS OF ITEM SALES FOR ORDER PLACEMENT
 ## OR THE DISMAL DIVE INTO THE FUTURE OF BEHEMOTH
 
 
@@ -13,15 +13,15 @@ Certainly if there was something that could crunch the efficiency of operations 
 
 ### Chapter II: The  Purple Purpose
 
-But what could I do in this dirty job with my humble and newly acquired Data Scientist skills? I decided I was going to try two things that were classic topics in this field:
+But what could I do in this dirty job with my humble and newly acquired Data Scientist skills? I decided I was going to try two things:
 
-+ Make relevant information easy to reach and interpret
-+ Use that information to attempt to forecast short term demand of items
++ Help understand what influences demand of items and how
++ Use this knowledge to attempt to forecast short term demand of items
++ Make relevant information available and easy to understand
 
-With a scope of more than 1000 different items I had to begin somewhere, and after some investigation I produced this chart to help me get started.
+With a scope of more than 1000 different items I had to begin somewhere, and after some questioning and querying, I came across this chart that help me get started.
 
-
-<h5 align="center">THE LEFT SIDE OF THE LONG TAIL IS THE TARGET</h5> 
+<h5 align="center">THE LEFT SIDE OF THE LONG TAIL IS THE TARGET </h5> 
 
 &nbsp;
 
@@ -32,7 +32,7 @@ With a scope of more than 1000 different items I had to begin somewhere, and aft
 
 &nbsp;
 
-Yes, it was definitely the left side of the long tail that I had to go after. It was either TheDaughterofTime, or PresumedInnocent. A little more investigation made me decide: I would finally begin by exploring the latter, a brand that had the following restrictions:
+Yes, it was definitely the left side of the long tail that I had to go after. It boiled down to either TheDaughterofTime, or PresumedInnocent. A little more investigation made me decide: I would begin by exploring the latter, a brand that had the following restrictions:
 
 + Refrigerated products, with a **shelf life of only 60 days**
 + Orders placed on a **weekly** basis, and thus weekly incoming stock too
@@ -42,10 +42,9 @@ Yes, it was definitely the left side of the long tail that I had to go after. It
 + The brand belongs to a relatively new category that is still in growth stage in the beverage market. The brand actually kick-started the category in the market in 2014
 + The brand has several classes or families: 1 litre, 750ml, Smoothies, etc.
 
-
 Here is the weekly sales of the chosen brand.
 
-<h5 align="center">WEEKLY SALES LOOK REALLY FUZZY</h5> 
+<h5 align="center"> BRAND´S WEEKLY SALES LOOK KIND OF FUZZY</h5> 
 
 <p align = "center" >
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Brand_Weekly.png width="500" height = "300" /> 
@@ -63,12 +62,12 @@ And This is what sales of the top 5 items looked liked:
 
 &nbsp;
 
-At that moment I was new to Time Series, but this **looked a lot like white noise.**
+At that moment I was new to Time Series, but this **kind of resembled white noise.**
 It had been a brave move, but could it have been foolish too? 
 
 ### Chapter 3: The  Dismal Data Of Dolphin
 
-Luckily, my company used an ERP sytem, that ran on a **Microsoft SQL Server** as a database. The core of the data I would use would come from here. I **connected the database to RStudio** and queried from there, loading the data to the environment. However, if any poor soul ever needs to run my code, the data is uploaded in my **Git repo as CSVs**.
+Luckily, my company used an ERP sytem, that ran on a **Microsoft SQL Server** as a database. The core of the data I would use came from here. I **connected the database to RStudio** and queried from there, loading the data to the environment. However, if any poor soul ever needs to run my code, the data is uploaded in my **Git repo as CSVs**.
 Incidentally, other sources of data were used to get holiday calendars, for which ics files were parsed and pdfs scraped.
 
 Of course, data was anonimized to keep curious cats from fishing around.
@@ -94,7 +93,7 @@ My first task was to make my mind up as to what was the final purpose of the for
 
 Also I could not forget, that perhaps even more important than the forecasts was the provision of relevant information for the task of ordering. Any insight would be precious.
 
-When I had chosen a brand to investigate, I had made an assumption: business conditions would be common to the items belonging to it. It was convenient to be consistent with it, so **all my attempts at forecasting would be made only with the top-seller item** (in the last two years). If I found anything interesting, I would then extend it to more items to test my hypothesis.
+When I had chosen a brand to investigate, I had made an assumption: business conditions would be common to the items belonging to it. It was convenient to be consistent with it, so **all my attempts at forecasting would be made only with the top-seller item**. If I found anything interesting, I would then extend it to more items to test my hypothesis.
 
 As to what **frequency of observations** I was going to use, it was pretty obvious that the case´s restrictions called for weekly data. However I had read that weekly data could be tricky due to variable number of weeks along years, so **I gave it a first try with monthly data**. This would allow me to use Exponential Methods and ARIMA Models.
 
@@ -133,8 +132,7 @@ This same pattern showed up when looking at the sales of the item´s class (750 
 </p>
 &nbsp;
 
-
-And finally, using more advanced methods, X11 and Loess decomposing showed the expected seasonality. Seats however was unable to do so, and to me this just could mean that quarter seasonality did not look rock solid. What could be causing this? 
+And finally, using more advanced methods, X11 and Loess decomposition showed the expected seasonality. Seats however was unable to do so, and to me this just could mean that quarter seasonality did not look rock solid. What could be causing this? 
 
 
 <h5 align="center"> ADVANCED DECOMPOSITION OF THE CORPSE</h5>
@@ -153,14 +151,14 @@ And finally, using more advanced methods, X11 and Loess decomposing showed the e
 </p>
 &nbsp;
 
-The main suspect behind the irregular behaviour of the time series was of course, **promotions**. I had to drill a hole here. **How active was customers´promotional activity?** This timeline said "enough":
+The main suspect behind the irregular behaviour of the time series was of course, **promotions**. I had to drill a hole here. The first question was to be made was **how active was customers´promotional activity?**. This timeline said "enough":
 
 <h5 align="center"> PROMOTIONS: REGULARLY IRREGULAR</h5>
 <p align = "center" >
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Promo_Timeline.png width=600 height = 400>
 </p>
 
-*Note: Customers have to buy stock before promotions, so that is why promotion Prices have a longer duration*
+*Note: Customers have to buy stock before promotions, so that is why promotion prices have a longer duration*
 
 &nbsp;
 
@@ -173,7 +171,7 @@ The sum of the number of promotional days in each month also revealed something 
 
 &nbsp;
 
-I had enough information to attempt my first approach to forecasting: a **Multiple Linear Regression**.
+I now had enough information to attempt my first approach to forecasting: a **Multiple Linear Regression**.
 This had the advantage of being simple, interpretable, and fast to compute. Also I had **information of promotions** with one month in advance, which would also make it feasible.
 
 I tried many predictors, and spent some time engineering new features reiteratively. These are the predictors that worked best:
@@ -186,17 +184,17 @@ I tried many predictors, and spent some time engineering new features reiterativ
 
 However my main concerns were others...
 
-First of all, finding a method to get to a model with reasonable accuracy. Although I tried it, I **couldn´t rely on a simple holdout sample** for two reasons: with monthly data I had at best 50 solid observations (the brand started in 2014), and I would be left stark naked if the model was just really good on the tested period. 
+First of all, finding a method to get to a model with reasonable accuracy. Although I tried it, I **couldn´t rely on a simple holdout sample** for two reasons: with monthly data I had at best 50 solid observations (the brand started in 2014), so I really couldn´t afford leaving observations out. Plus, this metohod would leave me stark naked if the model was just really good on the tested period
 
-**Time series cross validation (TSCV)**, also known as forecasting on a rolling window, **had to be my approach**. This method runs several tests, where it has trained a model only with observations that ocurred *before* the test. The main advantage for me was that it gives a better idea of the robustness of a model. After a little exploring, I concluded the TSCV would begin [twelve] months before the last observation.
+**Time series cross validation (TSCV)**, also known as forecasting on a rolling window, **had to be my approach**. This method runs several tests, where it has trained a model only with observations that ocurred *before* the test. Of course, this meant slower computing too, but the main advantage was that it gives a better idea of the robustness of a model. After a little exploring, I concluded the TSCV would begin twelve months before the last observation.
 
-My other concern was the metric I should use for accuracy. In the end I was inclined to use **Mean Absolute Scaled Errors, MASE**. This takes the Mean Absolute Error, and scales it by using the Mean Absolute Error of a benchmark method: Naive Forecasting. A 1 states that a model is just as bad a Naive forecast, and a 0.5 two times better. The great advantage of the metric clearly was that I could use it to compare different models and forecasts of other time series.
+My other concern was the **metric I should use for accuracy**. In the end I was inclined to use **Mean Absolute Scaled Errors, MASE**. This takes the Mean Absolute Error, and scales it by using the MAE of a benchmark method: Naive Forecasting. A 1 states that a model is just as bad a Naive forecast, and a 0.5 is two times better. The great advantage of the metric clearly was that I could use it to compare different models and forecasts of other time series.
 
 The greatest of all my worries was however, **finding a method fast and reliable enough to test combinations of predictors to come up with a decent model**. My problem was that with more than 40 predictors all possible combinations were countless, so trying all was NOT an option. To make a long story short the best way I found relied on randomness and bruteforce, just my style! 
 
-This method was **Stepwise Regression**. I defined a function that added one predictor at a time. The one that increased accuracy the most was chosen. This process was iterated until accuracy would improve no longer. Then I would replicate the process removing predictors. I would check the residuals of the resulting model, and if they didn´t satisfy me, I would simply add a few predictors randomly and reiterate. Surprisingly this would give good results.
+This method was **Hybrid Stepwise Regression**. I defined a function that added one predictor at a time. The one that increased accuracy the most was chosen. This process was iterated until accuracy would improve no longer. Then I would replicate the process removing predictors. I would check the residuals of the resulting model, and if they didn´t satisfy me, I would simply add a few predictors more or less randomly and reiterate. Surprisingly this would give good results.
 
-As a final step, I wanted to know when should I cut my data, since I didn´t want to train with too long or too short time series. With the model I found, I performed multiple forecasts, each beginning at a different month. The month that returned best accuracy would be when my time series should start.
+As a final step, I wanted to know **when should I cut my data**, since I didn´t want to train with too long or too short time series. With the model I found, I performed **multiple forecasts, each beginning at a different month**. The month that returned best accuracy would be when my time series should start.
 
 <h5 align="center"> TESTS OF THE WINNER MODEL, PRETTY SATISFYING </h5>
 <p align = "center" >
@@ -205,7 +203,11 @@ As a final step, I wanted to know when should I cut my data, since I didn´t wan
 
 &nbsp;
 
-Regression had worked pretty well, what could **Exponential Methods and Arima** do for me?
+Regression had worked pretty well, and now what could **Exponential Methods and Arima** do for me?
+
+To make it brief, I first explored Loess, Holt, Holt Winters and ETS (all implemented wonderfully by forecast package). These weren´t looking too impressive so I quicly hopped on to what I really was looking forward to- Arima. Because I wasn´t too sure about the existence of seasonality, I tried both normal and seasonal Arima. And I was feeling brave so I read a bit about the topic, dissected my time series in a dark corner, and attempted to produce my models manually before resourcing Auto Arima function... I never managed to outperform it.
+
+Finally I ran a timeseries cross validation for all the models I had produced in my monthly-data-exploration. **Non of the exponential or Arima models stood the comparison to multiple linear regression**. Actually, those weren´t even much better than a Naive forecast.
 
 
 <h5 align="center">THESE DON´T LOOK TOO BAD HERE, BUT TSCV DOESN´T THINK SO </h5>
@@ -219,27 +221,27 @@ Regression had worked pretty well, what could **Exponential Methods and Arima** 
 &nbsp;
 [...]
 
-It was now time to approach weekly data. I was only going to try a multiple linear regression, it had performed pretty well with weekly data, time was pressing, Arima had not been much better, and I was not convinced by workarounds I had read about to handle variable number of weeks in a year.
+It was now **time to approach weekly data**. I was **only going to try a multiple linear regression**. The model had performed pretty well with monthly data, plus time was pressing, and Arima had not been much better. Also, the latter implied dealing with the issue of variable number of weeks in a year, and I was not convinced by workarounds I had read about.
 
-Before going straight to it, I dug a little deeper, and explored how retail chain purchasers behaved related both to bank holidays and school holidays.
+Before going straight to it, I dug a little deeper, and explored the weekly data time series. Now I was **really interested in how demand behaved in relation to both bank holidays and school holidays**.
 
 <h5 align="center"> BANK HOLIDAYS </h5>
 <p align = "center" >
-<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Bank_Holiday_Plot.gif width=700>
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Bank_Holiday_Plot.gif width=600>
 </p>
 
 <h5 align="center"> SCHOOL HOLIDAYS </h5>
 <p align = "center" >
-<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/School_Holiday_Plot.gif width=700>
+<img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/School_Holiday_Plot.gif width=600>
 </p>
 
 &nbsp;
 
-It looked like I could expect peaks before and after bank holidays, and troughs during them; and a similar pattern for school holidays, only that, because their duration is longer, buyer activity would simply moderate. Further from that, there didn´t seem to be weekly seasonality, only certain weeks at which activity tended to lower or intensify in most cases due to holidays.
+It looked like I **could expect peaks before and after bank holidays, and troughs during them**. A similar pattern could be seen for school holidays, only that, because their duration is longer, buyer activity would simply moderate. Further from that, there didn´t seem to be weekly seasonality, only certain weeks at which activity tended to lower or intensify- in most cases due to holidays.
 
-Back to the multiple linear regression, I recycled the good old same predictors I had used for monthly data, but added weeks after and before holidays, and was **careful not to use lagged sales values inferior to four weeks** (my forecast window).
+Back to the **multiple linear regression**, I recycled the good old same predictors I had used for monthly data, but added weeks after and before holidays, and was **careful not to use lagged sales values inferior to four weeks** (my forecast window).
 
-Although the my time series was really messy, the forecast did an unexpectedly decent job.
+And although my time series was really messy, regression did an unexpectedly decent job. Here you can see a few of the tests performed by TSCV with the winner model:
 
 <h5 align="center"> WEEKLY DATA FORECAST TESTS, NOT THAT SCARY ANYMORE </h5>
 <p align = "center" >
@@ -248,41 +250,41 @@ Although the my time series was really messy, the forecast did an unexpectedly d
 
 &nbsp;
 
-I had to take a deep breath, it was now time for the ultimate test: I had to try forecasting sales of other items of the same brand. 
+I had to take a deep breath, it was now time for the ultimate test: I had to **try forecasting sales of other items of the same brand**. 
 
-I did this with five items... and although some time series only had observations from 2018, they still performed surprisingly well
+So I tried the **same approach for multiple linear regression with four more items**... and although some time series only had observations from 2018, they still performed surprisingly well:
 
-<h5 align="center"> ITEM 2 TESTS </h5>
+<h5 align="center"> 2nd ITEM: WINNER MODEL TESTS </h5>
 <p align = "center" >
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Week_Item2.gif width=600>
 </p>
 
 &nbsp;
 
-<h5 align="center"> ITEM 3 TESTS </h5>
+<h5 align="center"> 3rd ITEM: WINNER MODEL TESTS  </h5>
 <p align = "center" >
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Week_Item3.gif width=600>
 </p>
 
 &nbsp;
 
-<h5 align="center"> ITEM 4 TESTS </h5>
+<h5 align="center"> 4th ITEM: WINNER MODEL TESTS  </h5>
 <p align = "center" >
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Week_Item4.gif width=600>
 </p>
 
 &nbsp;
 
-<h5 align="center"> ITEM 5 TESTS </h5>
+<h5 align="center"> 5th ITEM: WINNER MODEL TESTS  </h5>
 <p align = "center" >
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Week_Item5.gif width=600>
 </p>
 
 &nbsp;
 
-I had now something solid enough to go a step further, I had not forgotten my other dark purpose. The case was calling for a Dashboard. I rolled my sleeves up and built an **interactive Shiny app**, where the end user could basically explore the time series, check the forecast of an item, and see at the same time when promotions and holidays had happened or would happen. Was that not making relevant information available?
+I had now something solid enough to go a step further, I had not forgotten my other dark purpose. The case was calling for a Dashboard. I rolled my sleeves up and quickly built an **interactive Shiny app**, where the end user could basically explore the time series, check the forecast of an item, and see at the same time when promotions and holidays had happened or would happen. Was that not making relevant information available? Of course I was still leaving important data out, but this was more than enough to start testing it at my company... 
 
-<h5 align="center"> ITEM 5 TESTS </h5>
+<h5 align="center"> A SHORT DEMO FOR A SIMPLE APP </h5>
 <p align = "center" >
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Shiny_Demo.gif width=900>
 </p>
