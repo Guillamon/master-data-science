@@ -105,4 +105,4 @@ When running the code **remember this**:
 Final remarks regarding the **Dashboard**:
 + To access it, execute the script Shiny App. It has not been hosted on a server online, so this is the only way to access it
 + It has only one page, where all toggling options appear on the sidebar
-+ You can see a small demo [here](https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Shiny_Demo.gif)
++ You can download a small demo [here](https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Shiny_Demo.gif)
