@@ -196,6 +196,8 @@ This method was **Hybrid Stepwise Regression**. I defined a function that added 
 
 As a final step, I wanted to know **when should I cut my data**, since I didn´t want to train with too long or too short time series. With the model I found, I performed **multiple forecasts, each beginning at a different month**. The month that returned best accuracy would be when my time series should start.
 
+Also, to mention a fiasco: I **handling outliers by moderating them**, that is changing their values to the minimum or maximum value of a n-tile. It worked in the first iterations, when accuracy was still low. Later, when accuracy improved the method just worsened forecasts. I also tried **Box-Cox tranformations**, and regardless the lambda I used, the same thing happened.
+
 <h5 align="center"> TESTS OF THE WINNER MODEL, PRETTY SATISFYING </h5>
 <p align = "center" >
 <img src=https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Forecast_Month.gif width=600>
