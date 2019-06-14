@@ -19,7 +19,7 @@ But what could I do in this dirty job with my humble and newly acquired Data Sci
 + Use this knowledge to attempt to forecast short term demand of items
 + Make relevant information available and easy to understand
 
-With a scope of more than 1000 different items I had to begin somewhere, and after some questioning and querying, I came across this chart that help me get started.
+With a scope of hundreds of different items I had to begin somewhere, and after some questioning and querying, I came across this chart that help me get started.
 
 <h5 align="center">THE LEFT SIDE OF THE LONG TAIL IS THE TARGET </h5> 
 
