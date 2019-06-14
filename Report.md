@@ -221,7 +221,6 @@ Finally I ran a timeseries cross validation for all the models I had produced in
 </p>
 
 &nbsp;
-[...]
 
 It was now **time to approach weekly data**. I was **only going to try a multiple linear regression**. The model had performed pretty well with monthly data, plus time was pressing, and Arima had not been much better. Also, the latter implied dealing with the issue of variable number of weeks in a year, and I was not convinced by workarounds I had read about.
 
