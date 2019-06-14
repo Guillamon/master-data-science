@@ -8,7 +8,7 @@ The sections in this readme are:
 5. CONCLUSIONS
 6. INSTRUCTIONS FOR RUNNING CODE
 
-For a more detailed story of the development of the project, read the Report in the repository [here](https://github.com/Guillamon/master-data-science/blob/master/Report.md)
+For a more detailed story of the development of the project, read the [Report](https://github.com/Guillamon/master-data-science/blob/master/Report.md) in the repository 
 
 ## 1. OBJECTIVES
 The purpose of the project is to improve the ordering system of the company, which is currently largely dependent on a single person and unstructured manual tasks.
@@ -105,3 +105,4 @@ When running the code **remember this**:
 Final remarks regarding the **Dashboard**:
 + To access it, execute the script Shiny App. It has not been hosted on a server online, so this is the only way to access it
 + It has only one page, where all toggling options appear on the sidebar
++ You can see a small demo [here](https://raw.githubusercontent.com/Guillamon/master-data-science/master/Charts/Shiny_Demo.gif)
